@@ -5,6 +5,14 @@ A simplebot using the MERN stack that can take an image and text as inputs, and 
 
 Live Link: https://img-analyze-bot.vercel.app/ (The server response might be very slow as it is deployed on Render free plan as it spin down with inactivity, which can delay requests by 50 seconds or more.)
 
+![image](https://github.com/user-attachments/assets/98926066-9d91-4d3b-97ff-cc3de43904c6)
+
+
+## Demo
+
+https://github.com/user-attachments/assets/c1f69102-1b3c-463c-95cf-2796b096ab1f
+
+
 ## Setup
 
 Setup my-project with npm
@@ -75,12 +83,6 @@ Since this app uses Amazon Bedrock to access LLM model i.e Mistral 7b you need t
 **Client:** Vite, Shadcn UI, TailwindCSS
 
 **Server:** Node, Express, MongoDB, Teserract.js, AWS Bedrock
-
-
-## Demo
-
-https://github.com/user-attachments/assets/c1f69102-1b3c-463c-95cf-2796b096ab1f
-
 
 
 
