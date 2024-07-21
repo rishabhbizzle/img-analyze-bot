@@ -56,7 +56,7 @@ Since this app uses Amazon Bedrock to access LLM model i.e Mistral 7b you need t
 #### Analyze Image
 
 ```http
-  POST /api/analyse
+  POST /api/analyze
 ```
 
 | Parameter | Type     | Description                       |
