@@ -2,7 +2,7 @@ const multer = require('multer');
 const os = require('os');
 
 const multerFilter =
-  (acceptedMimetypes = ['jpg', 'jpeg', 'png', 'webp']) =>
+  (acceptedMimetypes = ['jpg', 'jpeg', 'png']) =>
   (req, file, cb) => {
     for (let acceptedMimetype of acceptedMimetypes) {
       if (file.mimetype.includes(acceptedMimetype)) {

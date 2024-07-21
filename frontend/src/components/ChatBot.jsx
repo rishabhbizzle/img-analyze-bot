@@ -2,9 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { analyzeImage, getChats } from "../services/analyze";
-import { Loader2, LucideImage, Send, UploadIcon } from "lucide-react";
+import { Loader2, LucideImage, Send, Sparkles, UploadIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { toast } from "sonner";
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const VALID_FILE_TYPES = ["image/jpeg", "image/png", "image/jpg"];
 
 const ChatBot = () => {
   const [text, setText] = useState("");
@@ -22,9 +25,13 @@ const ChatBot = () => {
       formData.append("text", text);
       analyzeImage(formData)
         .then((data) => {
-          setChat([...chat, data?.analysis]);
+            if (data?.success){
+                setChat([...chat, data?.analysis]);
+                toast.success("Image analyzed successfully");
+            }
         })
         .catch((error) => {
+        toast.error("An error occurred while analyzing the image");
           console.error(error);
         })
         .finally(() => {
@@ -44,6 +51,7 @@ const ChatBot = () => {
         }
       })
       .catch((error) => {
+        toast.error("An error occurred while fetching chats");
         console.error(error);
       });
   }, []);
@@ -55,6 +63,27 @@ const ChatBot = () => {
         chatContainerRef.current.scrollHeight;
     }
   }, [chat]);
+
+  const validateFile = (file) => {
+    if (!VALID_FILE_TYPES.includes(file.type)) {
+      return "Invalid file type. Please upload an image (jpeg, jpg, png).";
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      return "File size exceeds 5MB. Please upload a smaller image.";
+    }
+    return "";
+  };
+
+  const handleImageChange = (e) => {
+    const selectedFile = e.target.files?.[0] || null;
+    const validationError = selectedFile ? validateFile(selectedFile) : "";
+    if (validationError) {
+      toast.error(validationError);
+      setFile(null);
+    } else {
+      setFile(selectedFile);
+    }
+  };
 
   return (
     <div className="flex flex-col h-screen bg-background w-full">
@@ -68,7 +97,7 @@ const ChatBot = () => {
                     <AvatarImage src="https://static.vecteezy.com/system/resources/thumbnails/003/337/584/small/default-avatar-photo-placeholder-profile-icon-vector.jpg" />
                     <AvatarFallback>YOU</AvatarFallback>
                   </Avatar>
-                  <div className="bg-card p-3 rounded-lg max-w-[70%] text-card-foreground">
+                  <div className="bg-card p-3 rounded-lg max-w-[70%] text-card-foreground text-xl font-semibold">
                     <p>{message?.originalText}</p>
                   </div>
                 </div>
@@ -76,7 +105,7 @@ const ChatBot = () => {
                 <div className="col-span-3">
                   <Card className="m-3">
                     <CardHeader>
-                      <CardTitle>
+                      <CardTitle className="text-xl font-bold">
                         <div className="flex gap-2 items-center">
                           <LucideImage className="h-6 w-6" />
                           <p>Raw Extracted Text from Image:</p>
@@ -89,10 +118,10 @@ const ChatBot = () => {
                   </Card>
 
                   <Card className="m-3">
-                    <CardHeader>
-                      <CardTitle>
+                    <CardHeader >
+                      <CardTitle className="text-xl font-bold">
                         <div className="flex gap-2 items-center">
-                          <LucideImage className="h-6 w-6" />
+                          <Sparkles className="h-6 w-6" />
                           <p>Analysis:</p>
                         </div>
                       </CardTitle>
@@ -125,10 +154,10 @@ const ChatBot = () => {
           onSubmit={handleSubmit}
           className=" flex justify-center items-center gap-2"
         >
-          <Input
+           <Input
             type="file"
             accept="image/*"
-            onChange={(e) => setFile(e.target.files?.[0] || null)}
+            onChange={handleImageChange}
             className="w-1/4"
           />
           <Input
