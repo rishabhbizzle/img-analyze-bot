@@ -25,3 +25,14 @@ export const getChats = async () => {
     return null
   }
 }
+
+
+export const deleteChats = async () => {
+  try {
+    const response = await axios.delete(`${API_URL}/cleanChats`)
+    return response?.data
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}

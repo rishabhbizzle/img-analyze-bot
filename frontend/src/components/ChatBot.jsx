@@ -9,7 +9,9 @@ import { toast } from "sonner";
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const VALID_FILE_TYPES = ["image/jpeg", "image/png", "image/jpg"];
 
-const ChatBot = () => {
+const ChatBot = ({
+    reRender, setReRender
+}) => {
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
   const [chat, setChat] = useState([]);
@@ -54,7 +56,7 @@ const ChatBot = () => {
         toast.error("An error occurred while fetching chats");
         console.error(error);
       });
-  }, []);
+  }, [reRender]);
 
   useEffect(() => {
     // Scroll to the bottom of the chat container when chat changes
