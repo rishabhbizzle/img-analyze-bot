@@ -3,6 +3,7 @@
 
 A simplebot using the MERN stack that can take an image and text as inputs, and analyze the image using an AI model and OCR to recognize and extract content from the image.
 
+Live Link: https://img-analyze-bot.vercel.app/ (The server response might be very slow as it is deployed on Render free plan as it spin down with inactivity, which can delay requests by 50 seconds or more.)
 
 ## Setup
 
@@ -78,6 +79,7 @@ Since this app uses Amazon Bedrock to access LLM model i.e Mistral 7b you need t
 
 ## Demo
 
+https://github.com/user-attachments/assets/c1f69102-1b3c-463c-95cf-2796b096ab1f
 
 
 
