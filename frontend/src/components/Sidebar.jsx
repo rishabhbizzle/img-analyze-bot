@@ -78,7 +78,9 @@ const Sidebar = ({ reRender, setReRender }) => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleClearChats}>Continue</AlertDialogAction>
+                  <AlertDialogAction onClick={handleClearChats}>
+                    Continue
+                  </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
@@ -90,10 +92,15 @@ const Sidebar = ({ reRender, setReRender }) => {
               <CardDescription>Made By Rishabh</CardDescription>
             </CardHeader>
             <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-              <Button size="sm" className="w-full">
-                <Github className="h-4 w-4 mr-2" />
-                Github
-              </Button>
+              <a
+                href="https://github.com/rishabhbizzle/img-analyze-bot"
+                target="_blank"
+              >
+                <Button size="sm" className="w-full">
+                  <Github className="h-4 w-4 mr-2" />
+                  Github
+                </Button>
+              </a>
             </CardContent>
           </Card>
         </div>

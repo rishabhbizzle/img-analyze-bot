@@ -9,13 +9,12 @@ import { toast } from "sonner";
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const VALID_FILE_TYPES = ["image/jpeg", "image/png", "image/jpg"];
 
-const ChatBot = ({
-    reRender, setReRender
-}) => {
+const ChatBot = ({ reRender, setReRender }) => {
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
   const [chat, setChat] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [chatLoading, setChatLoading] = useState(false);
   const chatContainerRef = useRef(null);
 
   const handleSubmit = (e) => {
@@ -27,13 +26,13 @@ const ChatBot = ({
       formData.append("text", text);
       analyzeImage(formData)
         .then((data) => {
-            if (data?.success){
-                setChat([...chat, data?.analysis]);
-                toast.success("Image analyzed successfully");
-            }
+          if (data?.success) {
+            setChat([...chat, data?.analysis]);
+            toast.success("Image analyzed successfully");
+          }
         })
         .catch((error) => {
-        toast.error("An error occurred while analyzing the image");
+          toast.error("An error occurred while analyzing the image");
           console.error(error);
         })
         .finally(() => {
@@ -46,15 +45,19 @@ const ChatBot = ({
   };
 
   useEffect(() => {
+    setChatLoading(true);
     getChats()
       .then((data) => {
         if (data) {
-          setChat(data.chats);
+          setChat(data?.chats);
         }
       })
       .catch((error) => {
         toast.error("An error occurred while fetching chats");
         console.error(error);
+      })
+      .finally(() => {
+        setChatLoading(false);
       });
   }, [reRender]);
 
@@ -120,7 +123,7 @@ const ChatBot = ({
                   </Card>
 
                   <Card className="m-3">
-                    <CardHeader >
+                    <CardHeader>
                       <CardTitle className="text-xl font-bold">
                         <div className="flex gap-2 items-center">
                           <Sparkles className="h-6 w-6" />
@@ -150,18 +153,24 @@ const ChatBot = ({
             </Card>
           ))}
         </div>
+        {chatLoading && (
+          <div className="flex justify-center items-center h-full">
+            Retrieving Chats..... <Loader2 className="h-6 w-6 animate-spin" />
+          </div>
+        )}
       </div>
       <Card className="px-5 py-4 items-center gap-2">
         <form
           onSubmit={handleSubmit}
           className=" flex justify-center items-center gap-2"
         >
-           <Input
+          <Input
             type="file"
             accept="image/*"
             onChange={handleImageChange}
             className="w-1/4"
           />
+
           <Input
             value={text}
             onChange={(e) => setText(e.target.value)}
@@ -169,7 +178,11 @@ const ChatBot = ({
             className="w-full"
           />
           <Button type="submit" disabled={!file || !text || loading}>
-            {loading ? <Loader2 className="h-6 w-6 mr-2 animate-spin" /> : <Send className="h-6 w-6 mr-2" />}
+            {loading ? (
+              <Loader2 className="h-6 w-6 mr-2 animate-spin" />
+            ) : (
+              <Send className="h-6 w-6 mr-2" />
+            )}
             {loading ? "Analyzing..." : "Send"}
           </Button>
         </form>
